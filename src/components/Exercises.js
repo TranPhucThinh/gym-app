@@ -8,11 +8,11 @@ import ExerciseCard from './ExerciseCard';
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const exercisePerPage = 9;
+  const exercisesPerPage = 9;
 
-  const indexOfLastExercise = currentPage * exercisePerPage;
-  const indexOfFirstExercise = indexOfLastExercise - exercisePerPage;
-  const currentExercise = exercises.slice(
+  const indexOfLastExercise = currentPage * exercisesPerPage;
+  const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage;
+  const currentExercises = exercises.slice(
     indexOfFirstExercise,
     indexOfLastExercise
   );
@@ -25,21 +25,21 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
 
   useEffect(() => {
     const fetchExercisesData = async () => {
-      let exerciseData = [];
+      let exercisesData = [];
 
       if (bodyPart === 'all') {
-        exerciseData = await fetchData(
+        exercisesData = await fetchData(
           'https://exercisedb.p.rapidapi.com/exercises',
           exerciseOptions
         );
       } else {
-        exerciseData = await fetchData(
+        exercisesData = await fetchData(
           `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
           exerciseOptions
         );
       }
 
-      setExercises(exerciseData);
+      setExercises(exercisesData);
     };
 
     fetchExercisesData();
@@ -56,7 +56,7 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
         flexWrap="wrap"
         justifyContent="center"
       >
-        {currentExercise.map((exercise, index) => (
+        {currentExercises.map((exercise, index) => (
           <ExerciseCard key={index} exercise={exercise} />
         ))}
       </Stack>
@@ -66,7 +66,7 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
             color="standard"
             shape="rounded"
             defaultPage={1}
-            count={Math.ceil(exercises.length / exercisePerPage)}
+            count={Math.ceil(exercises.length / exercisesPerPage)}
             page={currentPage}
             onChange={paginate}
             size="large"
